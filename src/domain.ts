@@ -1,5 +1,7 @@
 // don't overgeneralize entries and transactions
 
+import { eq, show, tuple as TP } from "fp-ts"
+import { flow } from "fp-ts/lib/function"
 import { Newtype } from "newtype-ts"
 import { NonZero } from "newtype-ts/lib/NonZero"
 
@@ -11,12 +13,26 @@ import { NonZero } from "newtype-ts/lib/NonZero"
  * - `NaN`
  *
  * @todo Allow for numbers greater than what javascript's number type can handle.
+ * @todo decimal should be between 0 and 99
  */
-export type Number = NonZero
+export type Number = [NonZero, NonZero]
 
 export type Debit = Record<"DR", Number>
 export type Credit = Record<"CR", Number>
 export type EntryAmount = Debit | Credit
+
+// from this to transaction
+// depends if it's an expense or not.
+export type CashReceipt = {
+  date: Date
+  from: string
+  amount: Number
+  to: string
+  description: string
+  identifier: string
+}
+
+export type SourceDocument = CashReceipt
 
 /**
  * @summary
